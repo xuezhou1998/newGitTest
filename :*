@@ -1,0 +1,174 @@
+/*
+Enter your query below.
+Please append a semicolon ";" at the end of the query
+*/
+SELECT U.name, SUM(R.distance) as distance_traveled
+FROM CITIES C JOIN USERS U ON C.id=U.city_id JOIN RIDES R ON U.id= R.user_id
+GROUP BY U.id,U.name
+order by distance_traveled desc, U.name
+limit 100
+
+seg=5
+[1,2,35,2,3,4,5,32,7,8,4,6,8]
+1,2,35,2,3
+2,35,2,3,4
+
+
+# if x >= 2 * len(space):
+    #     return min(space)
+    # return max([min(space[:x]), min(space[-x:]), max(space[x:-x])])
+    # n=len(space)
+    # q=[(-space[i],i) for i in range(x)]
+    # heapq.heapify(q)
+    # ans=[-q[0][0]]
+    # for i in range(x,n):
+    #     heapq.heappush(q,(-space[i],i))
+    #     while q[0][1]:
+    #         heapq.heappop(q)
+    #     ans.append(-q[0][0])
+    # return ans
+    
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+#
+# Complete the 'segment' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. INTEGER x
+#  2. INTEGER_ARRAY space
+#
+
+def segment(x, space):
+    # lst=[1,2,4,5]
+    
+    # print(lst)
+    # print(add_to(lst,3))
+#     # Write your code here
+    
+    if x==1:
+        return max(space)
+    min_list=[]
+    queue=space[:x-1].sort()
+    
+    print(queue,"q",space,x)
+    i=0
+    
+    while True:
+        
+        window=[space[i:i+x]]
+        
+        queue=add_to(queue,space[i+x-1])
+        if queue[0] in window:
+            min_list.append(queue[0])
+        else:
+            queue.pop(0)
+        i+=1
+            
+        
+        if i+x==len(space):
+            break
+    return max(min_list)
+def add_to(lst,e):
+    print(len(lst),"lst")
+    i=0
+    while True:
+        
+        if e<=lst[i]:
+            
+            lst.insert(i,e)
+            break
+        else:
+            i+=1
+            if i==len(lst):
+                break
+    return lst 
+
+    
+    
+        
+if __name__ == '__main__':
+
+
+
+
+def segment(x, space):
+    # Write your code here
+    # lst=[1,2,4,5]
+    
+    # print(lst)
+    # print(add_to(lst,3))
+#     # Write your code here
+    
+    if x==1:
+        return max(space)
+    min_list=[]
+    queue=[]
+    tmp=space[:x-1]
+    while tmp!=[]:
+        minn=min(tmp)
+        queue.append(minn)
+        tmp.remove(minn)
+    
+    # queue.sort()
+    
+    # print(queue,"q",space,x)
+    i=0
+    window=[]
+    while True:
+        # print("status, w, q, mlst", window, queue,min_list,i)
+        window=space[i:i+x]
+        
+        queue=add_to(queue,space[i+x-1])
+        # print("xxxx",space[i+x-1],queue)
+        if queue[0] in window:
+            min_list.append(queue[0])
+        else:
+            queue.pop(0)
+        i+=1
+            
+        
+        if i+x-1==len(space):
+            break
+    return max(min_list)
+def add_to(lst,e):
+    # print(len(lst),"lst")
+    i=0
+    while True:
+        
+        if e<=lst[i]:
+            
+            lst.insert(i,e)
+            break
+        else:
+            i+=1
+            if i==len(lst):
+                lst.append(e)
+                break
+    return lst 
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    x = int(raw_input().strip())
+
+    space_count = int(raw_input().strip())
+
+    space = []
+
+    for _ in xrange(space_count):
+        space_item = int(raw_input().strip())
+        space.append(space_item)
+
+    result = segment(x, space)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
